@@ -147,3 +147,76 @@ variable "hubs_parameters" {
   }))
   default = {}
 }
+
+# Diag settings / logs parameters
+
+variable "logs_destinations_ids" {
+  type        = list(string)
+  description = <<EOD
+List of destination resources IDs for logs diagnostic destination.
+Can be `Storage Account`, `Log Analytics Workspace` and `Event Hub`. No more than one of each can be set.
+If you want to specify an Azure EventHub to send logs and metrics to, you need to provide a formated string with both the EventHub Namespace authorization send ID and the EventHub name (name of the queue to use in the Namespace) separated by the `|` character.
+EOD
+}
+
+variable "logs_categories" {
+  type        = list(string)
+  description = "Log categories to send to destinations."
+  default     = null
+}
+
+variable "logs_metrics_categories" {
+  type        = list(string)
+  description = "Metrics categories to send to destinations."
+  default     = null
+}
+
+variable "custom_diagnostic_settings_name" {
+  description = "Custom name of the diagnostics settings, name will be 'default' if not set."
+  type        = string
+  default     = "default"
+}
+
+variable "default_tags_enabled" {
+  description = "Option to enable or disable default tags"
+  type        = bool
+  default     = true
+}
+
+variable "extra_tags" {
+  description = "Extra tags to add"
+  type        = map(string)
+  default     = {}
+}
+
+# Generic naming variables
+variable "name_prefix" {
+  description = "Optional prefix for the generated name"
+  type        = string
+  default     = ""
+}
+
+variable "name_suffix" {
+  description = "Optional suffix for the generated name"
+  type        = string
+  default     = ""
+}
+
+variable "use_caf_naming" {
+  description = "Use the Azure CAF naming provider to generate default resource name. `custom_namespace_name` override this if set. Legacy default name is used if this is set to `false`."
+  type        = bool
+  default     = true
+}
+
+# Custom resource names
+variable "custom_namespace_name" {
+  description = "Custom resource name for EventHub namespace."
+  type        = string
+  default     = ""
+}
+
+variable "custom_namespace_auth_rule_name" {
+  description = "Custom authorization rule name for EventHub namespace."
+  type        = string
+  default     = null
+}
